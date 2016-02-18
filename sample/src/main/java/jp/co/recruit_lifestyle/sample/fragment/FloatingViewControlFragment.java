@@ -80,9 +80,6 @@ public class FloatingViewControlFragment extends Fragment {
                 final boolean canShow = showFloatingAd(context);
                 if (!canShow) {
                     // 広告トリガーのFloatingViewの表示許可設定
-                    @SuppressLint("InlinedApi")
-                    final Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + context.getPackageName()));
-                    startActivityForResult(intent, FLOATINGAD_OVERLAY_PERMISSION_REQUEST_CODE);
                 }
             }
         };
@@ -103,9 +100,6 @@ public class FloatingViewControlFragment extends Fragment {
                 final boolean canShow = showChatHead(context);
                 if (!canShow) {
                     // シンプルなFloatingViewの表示許可設定
-                    @SuppressLint("InlinedApi")
-                    final Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + context.getPackageName()));
-                    startActivityForResult(intent, CHATHEAD_OVERLAY_PERMISSION_REQUEST_CODE);
                 }
             }
         });
@@ -118,27 +112,6 @@ public class FloatingViewControlFragment extends Fragment {
             }
         });
         return rootView;
-    }
-
-    /**
-     * オーバレイ表示の許可を処理します。
-     */
-    @Override
-    @TargetApi(Build.VERSION_CODES.M)
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CHATHEAD_OVERLAY_PERMISSION_REQUEST_CODE) {
-            final Context context = getActivity();
-            final boolean canShow = showChatHead(context);
-            if (!canShow) {
-                Log.w(TAG, getString(R.string.permission_denied));
-            }
-        } else if (requestCode == FLOATINGAD_OVERLAY_PERMISSION_REQUEST_CODE) {
-            final Context context = getActivity();
-            final boolean canShow = showFloatingAd(context);
-            if (!canShow) {
-                Log.w(TAG, getString(R.string.permission_denied));
-            }
-        }
     }
 
     /**
@@ -161,18 +134,13 @@ public class FloatingViewControlFragment extends Fragment {
     @SuppressLint("NewApi")
     private boolean showChatHead(Context context) {
         // API22以下かチェック
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
             context.startService(new Intent(context, ChatHeadService.class));
             return true;
         }
 
-        // 他のアプリの上に表示できるかチェック
-        if (Settings.canDrawOverlays(context)) {
-            context.startService(new Intent(context, ChatHeadService.class));
-            return true;
-        }
-
-        return false;
+        context.startService(new Intent(context, ChatHeadService.class));
+        return true;
     }
 
     /**
@@ -184,17 +152,12 @@ public class FloatingViewControlFragment extends Fragment {
     @SuppressLint("NewApi")
     private boolean showFloatingAd(Context context) {
         // API22以下かチェック
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
             context.startService(new Intent(context, FloatingAdService.class));
             return true;
         }
-
-        // 他のアプリの上に表示できるかチェック
-        if (Settings.canDrawOverlays(context)) {
             context.startService(new Intent(context, FloatingAdService.class));
             return true;
-        }
 
-        return false;
     }
 }
