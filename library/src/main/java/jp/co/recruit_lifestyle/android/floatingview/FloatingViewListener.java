@@ -17,6 +17,8 @@
 package jp.co.recruit_lifestyle.android.floatingview;
 
 
+import android.view.View;
+
 /**
  * FloatingViewのリスナです。
  */
@@ -27,4 +29,5 @@ public interface FloatingViewListener {
      */
     void onFinishFloatingView();
 
+    void onFinishFloatingView(View view);
 }

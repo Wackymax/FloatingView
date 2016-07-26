@@ -104,7 +104,7 @@ public class FloatingAdService extends Service implements FloatingViewListener {
         //options.floatingViewY = metrics.heightPixels / 2;
         // Move right(force)
         options.moveDirection = FloatingViewManager.MOVE_DIRECTION_RIGHT;
-        mFloatingViewManager.addViewToWindow(iconView, options);
+        mFloatingViewManager.addViewToWindow(iconView, options, "");
 
         // 常駐起動
         startForeground(NOTIFICATION_ID, createNotification());
@@ -135,6 +135,11 @@ public class FloatingAdService extends Service implements FloatingViewListener {
     @Override
     public void onFinishFloatingView() {
         stopSelf();
+    }
+
+    @Override
+    public void onFinishFloatingView(View view) {
+
     }
 
     /**

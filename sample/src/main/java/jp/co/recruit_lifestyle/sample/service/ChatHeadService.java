@@ -77,7 +77,7 @@ public class ChatHeadService extends Service implements FloatingViewListener {
         final FloatingViewManager.Options options = new FloatingViewManager.Options();
         options.shape = FloatingViewManager.SHAPE_CIRCLE;
         options.overMargin = (int) (16 * metrics.density);
-        mFloatingViewManager.addViewToWindow(iconView, options);
+        mFloatingViewManager.addViewToWindow(iconView, options, "");
 
         // 常駐起動
         startForeground(NOTIFICATION_ID, createNotification());
@@ -108,6 +108,11 @@ public class ChatHeadService extends Service implements FloatingViewListener {
     @Override
     public void onFinishFloatingView() {
         stopSelf();
+    }
+
+    @Override
+    public void onFinishFloatingView(View view) {
+
     }
 
     /**
